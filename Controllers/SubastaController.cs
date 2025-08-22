@@ -1,3 +1,5 @@
+using System;
+using System.Windows.Forms;
 using Subastas.Models;
 using Subastas.Views;
 
@@ -5,22 +7,23 @@ namespace Subastas.Controllers
 {
     public class SubastaController
     {
-        private readonly SubastaForm _view;
-        private readonly Subasta _model;
+        private SistemaSubastas sistema;
 
-        public SubastaController(SubastaForm view)
+        public SubastaController(SistemaSubastas sistemaSubastas)
         {
-            _view = view;
-            _model = new Subasta("Notebook Gamer", 50000);
-
-            _view.OnOferta += HandleOferta;
-            _view.MostrarSubasta(_model.Articulo, _model.PrecioInicial);
+            sistema = sistemaSubastas;
         }
 
-        private void HandleOferta(decimal monto)
+        public void CrearSubasta(string nombreSubastador, string articulo, decimal pujaInicial, decimal incremento, DateTime fecha, int duracion)
         {
-            _model.Ofertar(monto);
-            _view.MostrarOferta(_model.OfertaActual);
+            sistema.CrearSubasta(nombreSubastador, articulo, pujaInicial, incremento, fecha, duracion);
+        }
+
+        public void MostrarFormularioSubasta()
+        {
+            var form = new SubastaForm(sistema);
+            Application.Run(form);
         }
     }
 }
+
