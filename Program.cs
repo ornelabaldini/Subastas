@@ -1,26 +1,25 @@
 using System;
 using System.Windows.Forms;
-using Subastas.Controllers;
 using Subastas.Models;
+using Subastas.Views;
 
 namespace Subastas
 {
-    internal class Program
+    internal static class Program
     {
         [STAThread]
-        static void Main(string[] args)
+        static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             var sistema = new SistemaSubastas();
-            var controlador = new SubastaController(sistema);
 
-            // Crear ejemplo de subasta
-            controlador.CrearSubasta("Juan", "Guitarra", 1000m, 50m, DateTime.Now, 60);
+            // Opcional: agregar datos de ejemplo
+            sistema.CrearSubasta("Juan", "Guitarra", 1000m, 50m, DateTime.Now, 60);
 
-            controlador.MostrarFormularioSubasta();
+            // Ejecutar el formulario interactivo
+            Application.Run(new SubastaForm(sistema));
         }
     }
 }
-

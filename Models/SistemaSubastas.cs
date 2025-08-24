@@ -1,41 +1,39 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Subastas.Models
 {
     public class SistemaSubastas
     {
         public List<Subasta> SubastasActivas { get; private set; }
+        public List<Postor> Postores { get; private set; }
 
         public SistemaSubastas()
         {
             SubastasActivas = new List<Subasta>();
+            Postores = new List<Postor>();
         }
 
-        public void CrearSubasta(string nombreSubastador, string articulo, decimal pujaInicial, decimal incremento, DateTime fecha, int duracion)
+        public void CrearSubasta(string subastador, string articulo, decimal pujaInicial, decimal incremento, DateTime fecha, int duracion)
         {
-            var subasta = new Subasta(nombreSubastador, articulo, pujaInicial, incremento, fecha, duracion);
+            var subasta = new Subasta(subastador, articulo, pujaInicial, incremento, fecha, duracion);
             SubastasActivas.Add(subasta);
         }
 
-        public void FinalizarSubastasVencidas()
+        public void AgregarPostor(Postor postor)
         {
-            var ahora = DateTime.Now;
-            foreach (var subasta in SubastasActivas.ToList())
+            if (!Postores.Contains(postor))
             {
-                if ((ahora - subasta.Fecha).TotalMinutes >= subasta.DuracionMinutos)
-                {
-                    subasta.FinalizarSubasta();
-                    SubastasActivas.Remove(subasta);
-                }
+                Postores.Add(postor);
             }
         }
 
-        public Subasta ObtenerSubasta(string articulo)
+        public void EliminarPostor(Postor postor)
         {
-            return SubastasActivas.FirstOrDefault(s => s.Articulo == articulo);
+            if (Postores.Contains(postor))
+            {
+                Postores.Remove(postor);
+            }
         }
     }
 }
-
